@@ -34,6 +34,7 @@ class App extends React.Component {
   getCompanyInfo = (ticker) => {
     fetch("https://financialmodelingprep.com/api/v3/financials/income-statement/" + ticker)
       .then((response) => {
+        console.log(response);
         if(response.ok){
           return response.json();
         }else{
@@ -42,12 +43,17 @@ class App extends React.Component {
       }).then(MyJson => {
         if (MyJson !== null){
           console.log(MyJson);
-          this.setState({companyDetails: MyJson.financials[0]})
+          if (typeof MyJson.financials == "undefined"){
+            this.setState({companyDetails: -1})
+          }else{
+            this.setState({companyDetails: MyJson.financials[0]})
+          }
         }
     })
   };
 
   setValues = (values) => {
+    console.log(values);
     this.setState({selectedCompany: values});
     this.getCompanyInfo(values[0].symbol)
   };
@@ -63,7 +69,6 @@ class App extends React.Component {
       return item.name.toLowerCase().includes(input.toLowerCase())
     });
     return searchedArray.slice(0, maxLength);
-    // return this.state.companies.filter((item) => item.name.toLowerCase().contains(input.toLowerCase())).slice(0, maxLength);
   };
 
   calculateRelativeCost = () => {
@@ -71,6 +76,37 @@ class App extends React.Component {
       return null
     }
     return (50000 * this.state.numberValue / this.state.companyDetails.Revenue);
+  };
+
+  infoBox = () =>{
+    if(this.state.companyDetails === -1){
+      return(
+        <div className={"boxy"}>
+          <h3>We are having trouble loading that companies information right now. Please refresh the page and try again.</h3>
+        </div>
+      )
+    }else if(!(this.state.companyDetails === null || this.state.numberValue === null)){
+      return(
+        <div className={"boxy"}>
+          <h3>
+            Them paying:
+          </h3>
+          <h1><NumberFormat value={this.state.numberValue} displayType={'text'} thousandSeparator={true} prefix={'$'} decimalScale={2}/></h1>
+          <h3>
+            is equivalent to you paying:
+          </h3>
+          <h1><NumberFormat
+            value={this.calculateRelativeCost() < 0.01 ? 0.01 : this.calculateRelativeCost()}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={this.calculateRelativeCost() < 0.01 ? "< $" : "$"}
+            decimalScale={2}
+          /></h1>
+        </div>
+      )
+    }else{
+      return undefined;
+    }
   };
 
   render() {
@@ -93,24 +129,7 @@ class App extends React.Component {
         />
 
         <NumberFormat placeholder={"Input amount"} className={"inputty"} onValueChange={this.inputNumber} value={this.state.numberValue} thousandSeparator={true} prefix={'$'} />
-        {this.calculateRelativeCost() !== null && (
-          <div className={"boxy"}>
-            <h3>
-              Them paying:
-            </h3>
-            <h1><NumberFormat value={this.state.numberValue} displayType={'text'} thousandSeparator={true} prefix={'$'} decimalScale={2}/></h1>
-            <h3>
-              is equivalent to you paying:
-            </h3>
-            <h1><NumberFormat
-              value={this.calculateRelativeCost() < 0.01 ? 0.01 : this.calculateRelativeCost()}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={this.calculateRelativeCost() < 0.01 ? "< $" : "$"}
-              decimalScale={2}
-            /></h1>
-          </div>
-        )}
+        {this.infoBox()}
 
       </div>
     )
