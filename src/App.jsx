@@ -75,23 +75,29 @@ class App extends React.Component {
     if(this.state.companyDetails === null || this.state.numberValue === null){
       return null
     }
+    console.log((50000 * this.state.numberValue / this.state.companyDetails.Revenue));
     return (50000 * this.state.numberValue / this.state.companyDetails.Revenue);
   };
 
   infoBox = () =>{
     if(this.state.companyDetails === -1){
       return(
-        <div className={"boxy"}>
+        <div className={"warning"}>
           <h3>We are having trouble loading that companies information right now. Please refresh the page and try again.</h3>
         </div>
       )
-    }else if(!(this.state.companyDetails === null || this.state.numberValue === null)){
+    }else if(this.state.companyDetails !== null && this.state.numberValue !== null && this.state.numberValue !== "" && this.state.numberValue > 0){
       return(
         <div className={"boxy"}>
           <h3>
             Them paying:
           </h3>
-          <h1><NumberFormat value={this.state.numberValue} displayType={'text'} thousandSeparator={true} prefix={'$'} decimalScale={2}/></h1>
+          <h1><NumberFormat
+            value={this.state.numberValue}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={'$'}
+            decimalScale={2}/></h1>
           <h3>
             is equivalent to you paying:
           </h3>
@@ -101,6 +107,7 @@ class App extends React.Component {
             thousandSeparator={true}
             prefix={this.calculateRelativeCost() < 0.01 ? "< $" : "$"}
             decimalScale={2}
+            isNumericString={true}
           /></h1>
         </div>
       )

@@ -29,10 +29,16 @@
 }
 
 .boxy{
-  /*border: 1px solid #ccc;*/
-  border-radius: 2px;
-  background-color: rgba(192, 178, 131, 0.51);
-  width: 600px;
-  max-width: 90vw;
+  /*border-radius: 2px;*/
+  background-color: rgb(50, 50, 53);
+  color: whitesmoke;
+  width: 100vw;
+  text-align: center;
+}
+
+.warning{
+  background-color: rgb(177, 79, 79);
+  color: whitesmoke;
+  width: 100vw;
   text-align: center;
 }
