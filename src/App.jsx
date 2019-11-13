@@ -89,6 +89,7 @@ class App extends React.Component {
           valueField={"symbol"}
           noDataLabel="No matches found"
           searchFn={this.searchOverride}
+          dropdownHeight={"35vh"}
         />
 
         <NumberFormat placeholder={"Input amount"} className={"inputty"} onValueChange={this.inputNumber} value={this.state.numberValue} thousandSeparator={true} prefix={'$'} />
