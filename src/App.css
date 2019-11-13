@@ -1,0 +1,38 @@
+.App{
+  width: 90vw;
+  margin: 0 auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtitle{
+  margin-top: 2px;
+  color: #4d5052;
+  font-weight: normal;
+}
+
+.inputty{
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  padding: 2px 5px;
+  border-radius: 2px;
+  min-height: 36px;
+  max-width: 90vw;
+  width: 500px;
+}
+
+.inputty:hover{
+  border-color: #0074D9;
+}
+
+.boxy{
+  /*border: 1px solid #ccc;*/
+  border-radius: 2px;
+  background-color: rgba(192, 178, 131, 0.51);
+  width: 600px;
+  max-width: 90vw;
+  text-align: center;
+}
