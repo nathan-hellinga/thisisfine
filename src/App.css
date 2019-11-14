@@ -44,4 +44,7 @@
   width: 100vw;
   text-align: center;
 }
+.error > * {
+    margin: 5px;
+}
 
