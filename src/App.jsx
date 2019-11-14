@@ -48,7 +48,7 @@ class App extends React.Component {
           return null;
         }
       }).then(MyJson => {
-        if (MyJson !== null){
+      if (MyJson !== null){
           if (typeof MyJson.financials == "undefined"){
             this.setState({companyDetails: -1})
           }else{
@@ -84,13 +84,23 @@ class App extends React.Component {
   };
 
   infoBox = () =>{
+    if(this.state.companyDetails === null){
+      return undefined;
+    }
+
     if(this.state.companyDetails === -1){
       return(
         <div className={"error"}>
           <h3>We are having trouble loading that companies information right now. Please refresh the page and try again.</h3>
         </div>
       )
-    }else if(this.state.companyDetails !== null && this.state.numberValue !== null && this.state.numberValue !== "" && this.state.numberValue > 0){
+    }else if(this.state.companyDetails.Revenue === ""){
+      return(
+        <div className={"error"}>
+          <h3>There is no available revenue information for the selected company.</h3>
+        </div>
+      )
+    }else if(this.state.numberValue !== null && this.state.numberValue !== "" && this.state.numberValue > 0){
       return(
         <div className={"boxy"}>
           <h3>
@@ -115,15 +125,9 @@ class App extends React.Component {
           /></h1>
         </div>
       )
-    }else if(this.state.companyDetails !== null && this.state.companyDetails.Revenue === ""){
-      return(
-        <div className={"error"}>
-          <h3>There is no available revenue information for the selected company.</h3>
-        </div>
-      )
-    }else{
-      return undefined;
     }
+
+    return undefined;
   };
 
   render() {
