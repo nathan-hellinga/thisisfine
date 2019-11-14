@@ -12,6 +12,8 @@
   margin-top: 2px;
   color: #4d5052;
   font-weight: normal;
+  max-width: 500px;
+  text-align: center;
 }
 
 .inputty{
@@ -36,9 +38,10 @@
   text-align: center;
 }
 
-.warning{
-  background-color: rgb(177, 79, 79);
+.error{
+  background-color: #bf3543;
   color: whitesmoke;
   width: 100vw;
   text-align: center;
 }
+

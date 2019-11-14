@@ -2,10 +2,19 @@ import React from 'react';
 import './App.css';
 import Select from "react-dropdown-select";
 import NumberFormat from 'react-number-format';
+import ReactGA from 'react-ga';
 
 class App extends React.Component {
+
+
   constructor(props){
     super(props);
+    // Google Analytics
+    ReactGA.initialize('UA-143798056-2');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+
+    // Hire me
+    console.log("To contribute, or for more information: https://github.com/nathan-hellinga/thisisfine");
 
     this.state = {
       loading: true,
@@ -26,7 +35,6 @@ class App extends React.Component {
           this.setState({loading: false});
         return response.json();
     }).then(MyJson => {
-      console.log(MyJson);
       this.setState({companies: MyJson.symbolsList})
     })
   };
@@ -34,7 +42,6 @@ class App extends React.Component {
   getCompanyInfo = (ticker) => {
     fetch("https://financialmodelingprep.com/api/v3/financials/income-statement/" + ticker)
       .then((response) => {
-        console.log(response);
         if(response.ok){
           return response.json();
         }else{
@@ -42,7 +49,6 @@ class App extends React.Component {
         }
       }).then(MyJson => {
         if (MyJson !== null){
-          console.log(MyJson);
           if (typeof MyJson.financials == "undefined"){
             this.setState({companyDetails: -1})
           }else{
@@ -53,7 +59,6 @@ class App extends React.Component {
   };
 
   setValues = (values) => {
-    console.log(values);
     this.setState({selectedCompany: values});
     this.getCompanyInfo(values[0].symbol)
   };
@@ -75,14 +80,13 @@ class App extends React.Component {
     if(this.state.companyDetails === null || this.state.numberValue === null){
       return null
     }
-    console.log((50000 * this.state.numberValue / this.state.companyDetails.Revenue));
     return (50000 * this.state.numberValue / this.state.companyDetails.Revenue);
   };
 
   infoBox = () =>{
     if(this.state.companyDetails === -1){
       return(
-        <div className={"warning"}>
+        <div className={"error"}>
           <h3>We are having trouble loading that companies information right now. Please refresh the page and try again.</h3>
         </div>
       )
@@ -111,6 +115,12 @@ class App extends React.Component {
           /></h1>
         </div>
       )
+    }else if(this.state.companyDetails !== null && this.state.companyDetails.Revenue === ""){
+      return(
+        <div className={"error"}>
+          <h3>There is no available revenue information for the selected company.</h3>
+        </div>
+      )
     }else{
       return undefined;
     }
@@ -119,8 +129,8 @@ class App extends React.Component {
   render() {
     return(
       <div className="App">
-        <h1 style={{marginBottom: "1px"}}>Choose a company & input an amount</h1>
-        <h3 className={"subtitle"}>reveal the amount relative to the mean American household income</h3>
+        <h1 style={{margin: "1px"}}>Choose a company & input an amount</h1>
+        <h4 className={"subtitle"}>The calculator will show how much it's worth to the company, relative to the average American household income</h4>
         <Select
           style={{maxWidth: "90vw", width: "500px"}}
           onChange={(values) => this.setValues(values)}
